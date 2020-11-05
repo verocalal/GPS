@@ -1,0 +1,18 @@
+<script>
+    $(document).ready(function () {
+
+        load_json_data('subject');
+
+        function load_json_data(id, parent_id) {
+            var html_code = '';
+            $.getJSON('/json/subjects.json', function (data) {
+
+                html_code += '<option value="">Seleccciona una asignatura </option>';
+                $.each(data, function (key, value) {
+                    html_code += '<option value="' + value.name + '">' + value.name + '</option>';
+                });
+                $('#' + id).html(html_code);
+            });
+        }
+    });
+</script>

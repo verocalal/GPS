@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ES-ES">
+
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="/css/style.css" />
+        <title>Foro - Tema: <%=topic.title%></title>
+    </head>
+
+    <body>
+        <main>
+            <!--BARRA DE NAVEGACION-->
+            <%- include("./partials/header") %> 
+            <!-- Selección categoría y subcategoría -->
+            <%- include("../scripts/SelectTopicCategory") %>
+
+            <!-- BREADCRUMBS -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="/forum">Foro</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Tema: <%=topic.title%></li>
+                </ol>
+            </nav>
+
+            <!-- TITULO DEL TEMA -->
+            <h1>Tema: <%=topic.title%></h1>            
+            <div class="row">                
+                <div class="col contenido-principal">                    
+                    <div class="tema">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <!--INFORMACION DE USUARIO-->
+                                    <div class="col-auto border-right">
+                                        <img src="/images/person-fill.svg" wigth="132" height="132">
+                                        <br>
+                                        Tema creado por:
+                                        <br>
+                                        <%=topic.user%>
+                                        <%if(locals.userEmail){%>
+                                            <%if(username===topic.user){%>
+                                            <div>
+                                                <br>
+                                                <!--BOTON EDITAR TEMA-->
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#crearModalEditar" data-whatever="@mdo">Editar Tema</button>
+                                                <div class="modal fade" id="crearModalEditar" tabindex="-1" role="dialog" aria-labelledby="crearModalEditarLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="crearModalEditarLabel" style = 'color:#000000'>Editar tema</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <!--CONFIRMACION PARA EDITAR EL TEMA-->
+                                                                <form action="/forum/updateTopic" method="post">
+                                                                    <div class="form-group">
+                                                                        <label class="col-form-label" for="recipient-name"
+                                                                            style='color:#167c38'>Titulo:</label>
+                                                                        <input type="text" class="form-control" id="topic"
+                                                                            placeholder="title" name="title" value = "<%=topic.title%>" required>
+                                                                    </div>
+                                                                    <!-- Selección categoría -->
+                                                                    <div class="form-group">
+                                                                        <label class="col-form-label" for="recipient-name"
+                                                                            style='color:#167c38'>Categoría:</label>
+                
+                                                                        <select name="category" id="category"
+                                                                            class="form-control input-lg" value = "<%=topic.category%>" required>
+                                                                            <option value="">Selecciona una categoría</option>
+                                                                        </select>                
+                                                                    </div>
+                                                                    <!-- Selección subcategoría -->
+                                                                    <div class="form-group">
+                                                                        <label class="col-form-label" for="recipient-name"
+                                                                            style='color:#167c38'>Subcategoría:</label>
+                
+                                                                        <select name="subcategory" id="subcategory"
+                                                                            class="form-control input-lg" value = "<%=topic.subcategory%>">
+                                                                            <option value="">Selecciona una subcategoría</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <!-- Contenido del tema -->
+                                                                    <div class="form-group">
+                                                                        <label class="col-form-label" for="recipient-name"
+                                                                            style='color:#167c38'>Contenido:</label>
+                                                                        <textarea type="text" class="form-control" id="content"
+                                                                            placeholder="content" name="content" required><%=topic.content%></textarea>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input type="hidden" name="id" id="id" value = "<%=topic.id%>" >
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-success">Confirmar</button>
+                                                                </form> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>  
+                                            </div>
+                                            <%}%>
+                                        <%}%>
+                                        <%if(locals.userEmail){%>
+                                            <%if(username===topic.user){%>
+                                            <div><br>
+                                                <!--BOTON ELIMINAR TEMA-->
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#crearModalBorrar" data-whatever="@mdo">Borrar Tema</button>
+                                                <div class="modal fade" id="crearModalBorrar" tabindex="-1" role="dialog" aria-labelledby="crearModalBorrarLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="crearModalBorrarLabel" style = 'color:#000000'>Confirmación eliminar tema</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <!--CONFIRMACION PARA ELIMINAR EL TEMA-->
+                                                                <form action="/forum/deleteTopic" method="post">
+                                                                    <div class="form-group">
+                                                                        <label class="col-form-label" for="recipient-name" style = 'color:#000000'>¿Desea borrar?</label>
+                                                                        <input type="hidden" name="id" id="id" value = "<%=topic.id%>" >
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-success">Confirmar</button>
+                                                                </form> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>  
+                                            </div>
+                                            <%}%>
+                                        <%}%>
+                                    </div>                                          
+                                    <!--INFORMACION PRINCIPAL DEL TEMA-->                          
+                                    <div class="col">
+                                        <div>
+                                            <h6>
+                                                <span class="badge badge-success"> <%= topic.category%></span>
+                                                <span class="badge badge-success mb-2"> <%= topic.subcategory%></span>
+                                            </h6>
+                                        </div>                                        
+                                        <div class="card card-body">
+                                           <h5> <%= topic.content%> </h5>
+                                        </div>
+                                        <div class="float-right">
+                                            <img src="/images/calendar.svg" wigth="16" height="16">
+                                            <span>
+                                                <%= topic.date%>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <br>
+                                            <!--BOTON RESPONDER TEMA-->
+                                            <%if(locals.userEmail){%>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#crearModalResponder" data-whatever="@mdo">Responder Tema</button>
+    
+                                                <div class="modal fade" id="crearModalResponder" tabindex="-1" role="dialog" aria-labelledby="crearModalResponderLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="crearModalResponderLabel" style = 'color:#000000'>Mensaje de respuesta</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <!--MENSAJE DE RESPUESTA-->
+                                                                <form action="/forum/answerTopic" method="post">
+                                                                    <div class="form-group">
+                                                                        <label class="col-form-label" for="recipient-name" style = 'color:#000000'>Respuesta: </label>
+                                                                        <textarea type="text" class="form-control" id="answer"
+                                                                        placeholder="answer" name="answer" required></textarea>    
+                                                                        <input type="hidden" name="id" id="id" value = "<%=topic.id%>" >
+                                                                        <input type="hidden" name="user" id="user" value = "<%=username%>" >
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-success">Enviar respuesta</button>
+                                                                </form> 
+                                                            </div>
+                                                        </div>
+                                                     </div>                                                               
+                                                </div>
+                                            <%}else{%>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#inicioSesionResponder" data-whatever="@mdo">Responder Tema</button>
+    
+                                                <div class="modal fade" id="inicioSesionResponder" tabindex="-1" role="dialog" aria-labelledby="crearModalResponderLabel" aria-hidden="true">
+                                                    <br><br><br><br>
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Inicia sesión para responder a este tema.</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>                                            
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+                                                            </div>
+                                                        </div>
+                                                     </div>                                                               
+                                                </div>                                             
+                                            <%}%>
+                                        </div>  
+                                        <div class="col-11 float-right">
+                                            <% if(answers.length > 0){ %>
+                                            <% answers.forEach(a => { %>
+                                            <br>
+                                            <div class="card">
+                                                <div class="col">
+                                                    <b><%= a.user%></b>
+                                                    <br>
+                                                    <div>
+                                                        <span class="badge badge-success"> <%= a.date%></span>
+                                                    </div>
+                                                    <div class="float-left">
+                                                       <%= a.content%> 
+                                                    </div>
+                                                    <!--Borrar respuesta tema-->
+                                                    <%if(locals.userEmail){%>
+                                                    <%if(username===a.user){%>
+                                                    <form action="/forum/deleteAnswer" method="post" class="topic">
+                                                        <div class="float-right">
+                                                            <input type="hidden" name="idAnswer" value="<%= a.id%>">
+                                                            <input type="hidden" name="user" value="<%= a.user%>">
+
+                                                            <input type="submit" value="Borrar Respuesta"
+                                                                class="btn btn-success btn-sm mb-2">
+                                                        </div>
+                                                    </form>
+                                                    <% }} %>
+                                                </div>
+                                            </div>
+                                            <% });} else { %>
+                                            <h2>No hay respuestas a este tema.</h2>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>        
+    </body>
+
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ES-ES">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Foro - Reunión: <%=meetingInfo.title%></title>
+</head>
+
+<body>
+    <main>
+        <!--BARRA DE NAVEGACION-->
+        <%- include("./partials/header") %>
+        <!--SCRIPT DE SELECCIÓN DE LA ASIGNATURA-->
+        <%- include("../scripts/subjectsCreateMeeting") %>
+        <!--SCRIPT DE SELECCIÓN DE LA UBICACION-->
+        <%- include("../scripts/location") %>
+
+        <!-- BREADCRUMBS -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/meetings">Reuniones</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Reunión: <%=meetingInfo.title%></li>
+            </ol>
+        </nav>
+        <!--TITULO REUNION-->
+        <h1>Reunión: <%=meetingInfo.title%> <span style="font-size: 21px" class=" badge badge-secondary">
+                <%=meetingInfo.state%></span></h1>
+        <div class="row">
+            <div class="col contenido-principal">
+                <div class="reunión">
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <!--INFORMACION DE USUARIO-->
+                                <div class="col-md-2 border-right">
+                                    <img src="/images/person-fill.svg" wigth="132" height="132">
+                                    <br>
+                                    Reunión creada por:
+                                    <br>
+                                    <%=meetingInfo.user%>
+                                    <%if(locals.userEmail){%>
+                                    <%if(username === meetingInfo.user){%>
+                                    <!--BOTON CANCELAR REUNION-->
+                                    <div>
+                                        <br>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                                            data-target="#crearModal" data-whatever="@mdo">Cancelar reunión</button>
+                                        <div class="modal fade" id="crearModal" tabindex="-1" role="dialog"
+                                            aria-labelledby="crearModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="crearModalLabel"
+                                                            style='color:#000000'>
+                                                            Confirmar cancelación</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!--CONFIRMACION PARA CANCELAR LA REUNION-->
+                                                        <form action="/meetings/deleteMeeting" method="post">
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#000000'>¿Desea cancelar?</label>
+                                                                <input type="hidden" name="id" id="id"
+                                                                    value="<%=meetingInfo.id%>">
+                                                            </div>
+                                                            <button type="submit"
+                                                                class="btn btn-success">Confirmar</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%}%>
+                                    <%}%>
+                                </div>
+                                <!--INFORMACION PRINCIPAL DE LA REUNION-->
+                                <div class="col">
+                                    <div>
+                                        <h5> Asignatura: <span
+                                                class="badge badge-success"><%=meetingInfo.subject%></span>
+                                    </h5>
+                                    <h5>Fecha de creación: <%=meetingInfo.date%></h5>
+                                    <h5>Fecha de la reunión: <%=meetingInfo.date_meeting%> <%=meetingInfo.time_meeting%></h5>
+                                </div>
+                                <div class="card">
+                                <div class="card-body"> 
+                                    <%if(locals.userEmail){%>
+                                    <%if(username===meetingInfo.user){%>
+                                        <span class="float-right">
+                                            <input type="image" src="/images/pencil.svg" wigth="24" height="24"
+                                                data-toggle="modal" data-target="#editarReunion"
+                                                data-whatever="@mdo">
+                                        </span>
+                                        <!-- Modal modificar datos de reunión -->
+                                        <div class="modal fade" id="editarReunion" tabindex="-1" role="dialog"
+                                            aria-labelledby="crearModalResponderLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Editar datos de la reunión</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form action="/meetings/updateMeeting" method="post">
+                                                    <div class="modal-body">
+                                                        <!--FORMULARIO PARA ASIGNAR LOS DATOS DE LA REUNION A CREAR-->
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Título:</label>
+                                                                <input type="text" class="form-control" id="title"
+                                                                    placeholder="title" name="title" value="<%=meetingInfo.title%>" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input type="hidden" name="user" id="user" value="<%=username%>">
+                                                            </div>
+                                                            <!--ASIGNATURAS-->
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Asignatura:</label>                                                                    
+                                                                <select name="subject" id="subject"
+                                                                    class="form-control input-lg" required></select>
+                                                            </div>
+                                                            <!--LOCALIZACIÓN-->
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Lugar:</label>                                                                    
+                                                                <select name="location" id="location"
+                                                                    class="form-control input-lg" required></select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Fecha:</label>                                                                    
+                                                                <input type="date" name="date_reunion" id="date_reunion" value="<%=meetingInfo.date_meeting%>" min="2020-01-01"
+                                                                    max="2030-05-25" required>                                            
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Hora:</label>                                                                    
+                                                                <input type="time" name="time_reunion" value="<%=meetingInfo.time_meeting%>" id="time_reunion" required>                                            
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Capacidad:</label>
+                                                                <input type="number" value="<%=meetingInfo.capacity%>" min="2" max="50"
+                                                                    class="form-control" id="capacity" placeholder="capacity"
+                                                                    name="capacity" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Comentario:</label>
+                                                                <textarea class="form-control" id="comments"
+                                                                    placeholder="comments" name="comments" required><%=meetingInfo.comments%></textarea>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <input type="hidden" name="id" id="id" value="<%=meetingInfo.id%>">
+                                                            </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" class="btn btn-success" >Actualizar reunión</button>
+                                                    </div>
+                                                </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%}}%>
+                                    <%=meetingInfo.comments%>                                   
+                                </div>
+                            </div>
+                                <div class="float-left">
+                                    <img src="/images/ubicaina.png" wigth="16" height="16">
+                                    <%=meetingInfo.location%>
+                                </div>
+                                <div class="float-right">
+                                    <%=meetingInfo.count%> / <%=meetingInfo.capacity%> <img src="/images/people-fill.svg" wigth="16"
+                                        height="16">
+                                </div>
+                                <div>
+                                    <%if(locals.userEmail && locals.type_user === '1'){%>
+                                            <span class="col-22 float-right">
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#crearUnirseModal"
+                                                data-whatever="@mdo">Unirse a la reunion</button>
+                                            </span>
+                                    <%}%>
+                                    <div class="modal fade" id="crearUnirseModal" tabindex="-1" role="dialog" aria-labelledby="crearUnirseModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="crearUnirseModalLabel" style = 'color:#000000'>Unirse a la reunion</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!--CONFIRMACION PARA UNIRSE A LA REUNION-->
+                                                    <form action="/meetings/joinMeeting" method="post">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label" for="recipient-name" style = 'color:#000000'>¿Desea unirse?</label>
+                                                            <input type="hidden" name="id" id="id" value = "<%=meetingInfo.id%>" >
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" class="btn btn-success" >Confirmar</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <%if(locals.userEmail && locals.type_user === '1'){%>
+                                            <span class="col-20 float-right">
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#crearDesapuntarseModal"
+                                                data-whatever="@mdo">Desapuntarse a la reunion</button>
+                                            </span>
+                                    <%}%>
+                                    <div class="modal fade" id="crearDesapuntarseModal" tabindex="-1" role="dialog" aria-labelledby="crearDesapuntarseModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="crearDesapuntarseModalLabel" style = 'color:#000000'>Desapuntarse a la reunion</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!--CONFIRMACION PARA UNIRSE A LA REUNION-->
+                                                    <form action="/meetings/unjoinMeeting" method="post">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label" for="recipient-name" style = 'color:#000000'>¿Desea desapuntarse?</label>
+                                                            <input type="hidden" name="id" id="id" value = "<%=meetingInfo.id%>" >
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" class="btn btn-success" >Confirmar</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>

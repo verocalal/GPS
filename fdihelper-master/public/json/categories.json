@@ -1,0 +1,92 @@
+[ 
+    {
+     "id":"1",
+     "name":"Noticias",
+     "parent_id":"0"
+    }, 
+    {
+     "id":"2",
+     "name":"Consultas",
+     "parent_id":"0"
+    }, 
+    {
+     "id":"3",
+     "name":"Asignaturas",
+     "parent_id":"0"
+    }, 
+    {
+     "id":"4",
+     "name":"Otros",
+     "parent_id":"0"
+    }, 
+    {
+     "id":"5",
+     "name":"Sobre la Facultad",
+     "parent_id":"1"
+    }, 
+    {
+     "id":"6",
+     "name":"Cosas interesantes",
+     "parent_id":"1"
+    }, 
+    {
+     "id":"7",
+     "name":"Tecnología",
+     "parent_id":"1"
+    }, 
+    {
+     "id":"8",
+     "name":"Otros",
+     "parent_id":"1"
+    },
+    {
+     "id":"9",
+     "name":"Erasmus",
+     "parent_id":"2"
+    },
+    {
+     "id":"10",
+     "name":"Prácticas",
+     "parent_id":"2"
+    },
+    {
+        "id": "11",
+        "name": "TAIS",
+        "parent_id":"3"
+    },
+    {
+        "id": "12",
+        "name": "REDES",
+        "parent_id":"3"
+    },
+    {
+        "id": "13",
+        "name": "TCGE",
+        "parent_id":"3"
+    },
+    {
+        "id": "14",
+        "name": "MOG",
+        "parent_id":"3"
+    },
+    {
+        "id": "15",
+        "name": "ASR",
+        "parent_id":"3"
+    },
+    {
+        "id": "16",
+        "name": "ABD",
+        "parent_id":"3"
+    },
+    {
+        "id": "17",
+        "name": "MS",
+        "parent_id":"3"
+    },
+    {
+        "id": "18",
+        "name": "GPS",
+        "parent_id":"3"
+    }    
+]

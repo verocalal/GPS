@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ES-ES">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css" />
+    <title> Asociaciones - Listar asociaciones</title>
+</head>
+
+<body>
+
+    <!-- Alertas 
+
+    <div class="alert alert-success" role="alert" id="OK">
+        <strong>Well done!</strong> Asociación añadida correctamente! .
+    </div>
+    <div class="alert alert-danger" role="alert" id="ERROR">
+        <strong>Oh snap!</strong> Error con los datos de la asociacion!.
+    </div>
+
+    -->
+
+
+    <main>
+        <!--BARRA DE NAVEGACION-->
+        <%- include("./partials/header") %>
+
+        <!-- BREADCRUMBS -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/listAssociations">Asociaciones</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Listar asociaciones</li>
+            </ol>
+        </nav>
+        <!--CONTENIDO PRINCIPAL-->
+        <h1 class="text-center"> Asociaciones </h1>
+        <div class="row">
+            <div class="col contenido-principal">
+                <!--BOTÓN CREAR UN NUEVA ASOCIACIÓN-->
+                <div class="row">
+                    <div class="col">
+                        <span class="float-right">
+                            <div class='col-lg buttonNewAssociation'>
+                                &nbsp;
+                                <%if(locals.userEmail && locals.type_user === '0'){%>
+                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                    data-target="#crearModal" data-whatever="@mdo">Crear Asociación</button>
+                                <%}%>
+
+                                <div class="modal fade" id="crearModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="crearModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="crearModalLabel" style='color:#167c38'>
+                                                    Información de la nueva asociación</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!--FORMULARIO PARA ASIGNAR LOS DATOS DE LA ASOCIACIÓN A CREAR-->
+                                                <form action="/associations/createAssociation" method="post" enctype="multipart/form-data">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Asociación:</label>
+                                                        <input type="text" class="form-control" id="association"
+                                                            placeholder="name" name="name" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Logo:</label>
+                                                        <input type="file" class="form-control-file" id="logo" name="logo"
+                                                            accept=".jpg,.png,.jpeg">
+                                                        <!--COMPROBACIÓN TAMAÑO ARCHIVO-->
+                                                        <%- include("../scripts/checkFileSize") %>
+                            </div>
+                            <!--<div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Email:</label>
+                                                        <input type="email" class="form-control" id="email"
+                                                            placeholder="email" name="email" required>
+                                                    </div>-->
+                            <div class="form-group">
+                                <label class="col-form-label" for="recipient-name" style='color:#167c38'>Página
+                                    web:</label>
+                                <input type="web" class="form-control" id="web" placeholder="web" name="web">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label" for="recipient-name"
+                                    style='color:#167c38'>Localización:</label>
+                                <input type="location" class="form-control" id="location" placeholder="location"
+                                    name="location" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label" for="recipient-name" style='color:#167c38'>Redes
+                                    sociales:</label>
+                                <input type="socialMedia" class="form-control" id="social_media"
+                                    placeholder="socialMedia" name="social_media" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label" for="recipient-name"
+                                    style='color:#167c38'>Descripción:</label>
+                                <textarea type="text" class="form-control" id="description" name="description"
+                                    required></textarea>
+                            </div>
+                            <span class="float-right">
+                                <button type="submit" class="btn btn-success">Enviar</button>
+                            </span>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </span>
+        </div>
+        </div>
+        <!-- LISTAR ASOCIACIONES -->
+        <div class="reunion">
+            <div class="row">
+                <div class="col">
+                    <% if(associations.length > 0){ %>
+                    <% associations.forEach(association => { %>
+                    <br>
+                    <div class="card">
+                        <div class="col">
+                            <div class="col-auto float-left">
+                                <% if (association.logo != null) { %>
+                                <img src="/images/associations_logos/<%=association.logo %>" wigth="60" height="60"
+                                    style="max-width: 60px;">
+                                <%}else { %>
+                                <img src="/images/associations_logos/default.png" wigth="60" height="60"
+                                    style="max-width: 60px;">
+                                <%}%>
+                                    </div>
+
+                                    <b><%= association.name%></b>
+                                <br>
+                                <span class="badge badge-success mb-2"> <%= association.email%></span>
+                                <% if (association.web != "") { %>
+                                <span class="badge badge-success mb-2"> <%= association.web%></span>
+                                <%}%>
+                                    <!--IR A VER UNA ASOCIACIÓN ESPECIFICA-->
+                                    <div class="float-right">
+
+                                        <form action="/associations/info" method="post" class="association">
+                                            <input type="hidden" name="idAssociation" value="<%= association.id%>">
+                                <input type="submit" value="Ver Asociación" class="btn btn-success btn-sm mb-2">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <% });} else { %>
+                    <h2> No se han encontrado asociaciones que listar.</h2>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </main>
+
+ 
+
+
+</body>
+
+</html>

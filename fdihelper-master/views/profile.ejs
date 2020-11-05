@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ES-ES">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/profile.css" />    
+    <title> Perfil</title>    
+</head>
+
+<body>
+    <main>
+        <!--BARRA DE NAVEGACION-->
+        <%- include("./partials/header") %>
+
+        <!-- BREADCRUMBS -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item active">Perfil</li>
+            </ol>
+        </nav>
+
+        <!--CONTENIDO PRINCIPAL-->
+        <div class="row">
+            <!-- BARRA LATERAL -->
+            <div class="col-md-3 float-left">
+                <br><br><br>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="profile-tab" data-toggle="pill" href="#profile" role="tab"
+                        aria-controls="profile" aria-selected="true">Perfil</a>
+                    <a class="nav-link" id="associations-tab" data-toggle="pill" href="#associations" role="tab"
+                        aria-controls="associations" aria-selected="false">Asociaciones seguidas</a>
+                </div>
+            </div>
+            <!-- MOSTRAR INFORMACIÓN -->
+            <div class="col contenido-principal">
+                <!-- INFORMACIÓN PERFIL -->
+                <div class="tab-content" id="tabContent">
+                    <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <%if(user.type_user === '0'){%>
+                             <h1 class="text-center"> Perfil asociación </h1>
+                        <%}else{%>
+                            <h1 class="text-center"> Perfil </h1>
+                        <%}%>
+                        <form action="/users/update" method="post" enctype="multipart/form-data">
+                            <!-- IMAGEN -->
+                            <dl class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <% if (user.image != undefined) { %>
+                                    <img src="/images/users_images/<%=user.image %>" class="imagen-usuario" wigth="132" height="132" style="max-width: 132px;">
+                                    <%}else { %>
+                                    <img src="/images/users_images/default.png" class="imagen-usuario" wigth="132" height="132" style="max-width: 132px;">
+                                    <%}%>
+                                </div>
+                                <div class="col-lg-10">
+                                    <br><br>
+                                    <input type="file" class="form-control-file" id="image" name="image" accept=".jpg,.png,.jpeg" value ="<%=user.image%>">
+                                     <!--COMPROBACIÓN TAMAÑO ARCHIVO-->
+                                     <%- include("../scripts/checkFileSize")%>
+                                </div>
+                            </div>
+                            </dl>
+                            <!-- Nombre de usuario -->
+                            <dl class="form-group">
+                                <dt><label for="user_profile_name">Usuario</label></dt>
+                                <dd>
+                                    <input type="text" class="form-control" id="username" placeholder="nombre de usuario" value="<%=user.username%>"
+                                        name="username" required>
+                                </dd>
+                            </dl>
+                            <!-- Correo -->
+                            <dl class="form-group">
+                                <dt><label for="user_profile_mail">Correo</label></dt>
+                                <dd>
+                                    <label class="form-control"><%=user.email%></label>
+                                </dd>
+                            </dl>
+                            <!-- Fecha de nacimiento -->
+                            <dl class="form-group">
+                                <dt><label for="user_profile_date_birth">Fecha de nacimiento</label></dt>
+                                <dd>
+                                    <input type="date" name="date_birth" value="<%=user.date_birth%>" min="1970-01-01" max="2030-05-25" required>
+                                </dd>
+                            </dl>
+                            <!-- Contraseña -->
+                            <div class="form-group">
+                                <dt><label class="col-form-label" for="recipient-name" style='color:#000000'>Introduzca su contraseña para confirmar
+                                    cambios: </label></dt>                            
+                                <input type="password" class="form-control" id="password" placeholder="contraseña" name="password" required>                            
+                            </div>                            
+                            <button type="submit" class="btn btn-success">Modificar perfil</button>
+                            </form>
+                    </div>
+                    <!-- INFORMACIÓN ASOCIACIONES SEGUIDAS -->
+                    <div class="tab-pane fade" id="associations" role="tabpanel" aria-labelledby="associations-tab">
+                        <h1 class="text-center"> Asociaciones seguidas </h1>
+                        <% if(user.associations != null) { %>
+                            <% user.associations.forEach(asso => { %>
+                                <br>
+                                <div class="card">
+                                    <div class="col">
+                                        <div class="col-auto float-left">
+                                            <% if (asso.logo != null) { %>
+                                                <img src="/images/associations_logos/<%=asso.logo %>" wigth="60"
+                                                    height="60" style="max-width: 60px;">
+                                                <%}else { %>
+                                                <img src="/images/associations_logos/default.png" wigth="60" height="60"
+                                                    style="max-width: 60px;">
+                                                <%}%>
+                                        </div>
+                                        <b><%= asso.name %></b>
+                                        <br>
+                                        <span class="badge badge-success mb-2"> <%= asso.email %></span>
+                                        <span class="badge badge-success mb-2"> <%= asso.web %></span>
+                                        <!--IR A VER UNA ASOCIACIÓN ESPECIFICA-->
+                                        <div class="float-right">
+                                            <form action="/associations/info" method="post" class="association">
+                                                <input type="hidden" name="idAssociation" value="<%=asso.id%>">
+                                                <input type="submit" value="Ver Asociación" class="btn btn-success btn-sm mb-2">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% } else { %>
+                            <h2>No sigues ninguna asociación</h2>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

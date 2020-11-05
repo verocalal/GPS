@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ES-ES">
+
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="/css/style.css" />
+        <title>Registro </title>
+    </head>
+
+    <body>
+        <main>
+        <!--BARRA DE NAVEGACION-->
+        <%- include("./partials/header") %>            
+        <form action="/users/signup" method="post" enctype="multipart/form-data">
+            <section>
+                <h1>Registrate</h1>
+                <div class="form-group">
+                    <label class="col-form-label" for="recipient-name" style = 'color:#000000'>Nombre de usuario: </label>
+                    <input type="text" class="form-control" id="username"
+                    placeholder="username" name="username" required>  
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="recipient-name" style = 'color:#000000'>Correo Electronico: </label>                    
+                    <input type="email" class="form-control" id="email"
+                    placeholder="email" name="email" pattern=".+@[uU][cC][mM][.][eE][sS]"title="ejemplo@ucm.es"required>                      
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="recipient-name" style = 'color:#000000'>Contraseña: </label>                    
+                    <input type="password" class="form-control" id="password"
+                    placeholder="password" name="password"  required>                      
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="recipient-name"
+                        style='color:#167c38'>Fecha de nacimiento:</label>                        
+                    <input type="date" name="date_birth" min="1970-01-01"
+                        max="2030-05-25" required>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="recipient-name"
+                        style='color:#167c38'>Imagen de perfil:</label>
+                    <input type="file" class="form-control-file" id="image" name="image"
+                        accept=".jpg,.png,.jpeg">
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" name="type_user" value ="OFF" id="type_user"> 
+                    <label class="col-form-label" for="recipient-name"
+                    style='color:#167c38'>¿Eres representante de una Asocación? Marca esta casilla.</label>                    
+                </div>
+            </section>
+           <p> <button type="submit" class="btn btn-success">Confirmar registro</button> </p>
+        </form>           
+        </main>        
+    </body>
+    
+</html>

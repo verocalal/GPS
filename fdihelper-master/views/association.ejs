@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ES-ES">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Foro - Asociación: <%=association.name%></title>
+</head>
+
+<body>
+    <main>
+        <!--BARRA DE NAVEGACION-->
+        <%- include("./partials/header") %>
+
+        <!-- BREADCRUMBS -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/listAssociations">Asociaciones</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Asociación: <%=association.name%></li>
+            </ol>
+        </nav>
+
+        <h1>Asociación: <%=association.name%></h1>
+
+
+        <div class="row">
+            <!-- CONTENIDO PRINCIPAL -->
+            <div class="col contenido-principal">
+                <!-- MOSTRAR INFORMACIÓN DE LA ASOCIACION -->
+                <div class="tema">
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-2 border-right">
+                                    <% if (association.logo != null) { %>
+                                    <img src="/images/associations_logos/<%=association.logo %>" wigth="132"
+                                        height="132">
+                                    <%}else { %>
+                                    <img src="/images/associations_logos/default.png" wigth="132" height="132">
+                                    <%}%>                                      
+                                        
+                                    <br>
+                                    <br>
+                                    <div>
+                                        <span class="float-left">
+                                            <%=association.name%>
+                                        </span>
+
+                                        <!-- EDITAR ASOCIACIÓN-->
+                                        <%if(locals.type_user === '0' && locals.userEmail === association.email){%>
+                                        <span class="float-right">
+                                            <input type="image" src="/images/pencil.svg" wigth="24" height="24"
+                                                data-toggle="modal" data-target="#editarAsociacion" data-whatever="@mdo"
+                                                title="Editar asociacion">
+                                        </span>
+                                        <!-- MODAL MODIFICAR DATOS DE ASOCIACIÓN -->
+                                        <div class="modal fade" id="editarAsociacion" tabindex="-1" role="dialog"
+                                            aria-labelledby="crearModalEditarLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalEditarLabel">Editar
+                                                            datos</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form action="/associations/updateAssociation" method="post" enctype="multipart/form-data">
+                                                        <div class="modal-body">
+
+                                                            <input type="hidden" name="associationId" id="associationId"
+                                                                value="<%=association.id%>">
+
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Nombre asociación:</label>
+                                                                <input type="text" class="form-control" id="name"
+                                                                    placeholder="<%=association.name%>" name="name">
+                                                                <input type="hidden" name="associationName" value="<%=association.name%>">
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Logo:</label>
+                                                                <input type="file" class="form-control-file" id="logo"
+                                                                    name="logo" accept=".jpg,.png,.jpeg">
+                                                                <input type="hidden" name="associationLogo" value="<%=association.logo%>">
+                                                                <!--COMPROBACIÓN TAMAÑO ARCHIVO-->
+                                                                <%- include("../scripts/checkFileSize")%>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Página web:</label>
+                                                                <input type="web" class="form-control" id="web"
+                                                                    placeholder="<%=association.web%>" name="web">
+                                                                <input type="hidden" name="associationWeb" value="<%=association.web%>">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Localización:</label>
+                                                                <input type="location" class="form-control"
+                                                                    id="location" placeholder="<%=association.location%>" name="location">
+                                                                <input type="hidden" name="associationLocation" value="<%=association.location%>">
+
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Redes sociales:</label>
+                                                                <input type="socialMedia" class="form-control"
+                                                                    id="social_media" placeholder="<%=association.social_media%>"
+                                                                    name="social_media">
+                                                                <input type="hidden" name="associationSocialMedia" value="<%=association.social_media%>">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-form-label" for="recipient-name"
+                                                                    style='color:#167c38'>Descripción:</label>
+                                                                <textarea type="text" class="form-control"
+                                                                    id="description" name="description" required><%=association.description%>
+                                                                </textarea>
+                                                                <input type="hidden" name="associationDescription" value="<%=association.description%>">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <span class="float-right">
+                                                                    <button type="submit" class="btn btn-success mb-2"
+                                                                        height="24">Confirmar cambios</button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%}%>
+                                        <br>
+                                        <br>
+                                    <span>
+                                        <div>
+                                            <label class="col-form-label" for="recipient-name"
+                                                style='color:#167c38'>REDES SOCIALES:</label>
+                                            <%=association.social_media%>
+                                </div>
+                                </span>
+
+                                <div>
+                                    <h6>
+                                        <span class="badge badge-success"> <%= association.email%></span>
+                                        <% if (association.web != "") { %>
+                                        <span class="badge badge-success mb-2"> <%= association.web%></span>
+                                        <%}%>
+                                        </h6>
+                                    </div>
+
+                                    <!--BOTON ELIMINAR ASOCIACIÓN-->
+                                    <% if(locals.type_user === '0' && locals.userEmail === association.email ) { %>
+                                        <div>
+                                            <br>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                data-target="#crearModal" data-whatever="@mdo">Eliminar
+                                                asociación</button>
+                                            <div class="modal fade" id="crearModal" tabindex="-1" role="dialog"
+                                                aria-labelledby="crearModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="crearModalLabel"
+                                                                style='color:#000000'>
+                                                                Confirmar eliminación</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <!--CONFIRMACION PARA ELIMINAR LA ASOCIACIÓN-->
+                                                            <form action="/associations/deleteAssociation"
+                                                                method="post">
+                                                                <div class="form-group">
+                                                                    <label class="col-form-label" for="recipient-name"
+                                                                        style='color:#000000'>¿Desea eliminar la
+                                                                        asociación?</label>
+                                                                    <input type="hidden" name="id" id="id"
+                                                                        value="<%=association.id%>">
+                                                                </div>
+                                                                <button type="submit"
+                                                                    class="btn btn-success">Confirmar</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%}%>
+
+                                    <!-- EL USUARIO ASOCIACIÓN ESTÁ LOGEADO Y LA ASOCIACIÓN 
+                                    NO SE PUEDE SEGUIR A SI MISMA -->
+                                    <%if(locals.userEmail && locals.userEmail !== association.email){%>
+                                        <!--BOTON SEGUIR ASOCIACIÓN-->
+                                        <div>
+                                            <br>
+                                            <button type="button" class="btn btn-success" data-toggle="modal"
+                                                data-target="#crearModalDos" data-whatever="@mdo">Seguir
+                                                asociación</button>
+                                            <div class="modal fade" id="crearModalDos" tabindex="-1" role="dialog"
+                                                aria-labelledby="crearModalLabelDos" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="crearModalLabelDos"
+                                                                style='color:#000000'>
+                                                                Confirmar seguimiento</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <!--CONFIRMACION PARA SEGUIR LA ASOCIACIÓN-->
+                                                            <form action="/associations/joinAssociation" method="post">
+                                                                <div class="form-group">
+                                                                    <label class="col-form-label" for="recipient-name"
+                                                                        style='color:#000000'>¿Desea seguir a esta
+                                                                        asociación?</label>
+                                                                    <input type="hidden" name="id" id="id"
+                                                                        value="<%=association.id%>">
+                                                                </div>
+                                                                <button type="submit"
+                                                                    class="btn btn-success">Confirmar</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%}%>
+                                </div>
+                            </div>
+                                <div class="col">
+                                    <div class="card card-body">
+                                        <%= association.description%>
+                                </div>
+                                <div class="float-right">
+                                    <img src="/images/ubicaina.png" wigth="16" height="16">
+                                    <span>
+                                        <%= association.location%>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+
+</body>
+
+</html>

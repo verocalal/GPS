@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ES-ES">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Reunión - Listar reuniones</title>
+</head>
+
+<body>
+    <main>
+        <!--BARRA DE NAVEGACION-->
+        <%- include("./partials/header") %>
+        <!--SCRIPT DE SELECCIÓN DE LA ASIGNATURA-->
+        <%- include("../scripts/subjectsCreateMeeting") %>
+        <!--SCRIPT DE SELECCIÓN DE LA UBICACION-->
+        <%- include("../scripts/location") %>
+
+        <!-- BREADCRUMBS -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/meetings">Reuniones</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Listar reuniones</li>
+            </ol>
+        </nav>
+        <!--CONTENIDO PRINCIPAL-->
+        <h1>Listar reuniones</h1>
+        <div class="row">
+            <div class="col contenido-principal">
+                <div class="row">
+                    <div class="col">
+                        <span class="float-right">
+                            <div class='col-lg buttonNewMeeting'>
+                                &nbsp;
+                                <!--BOTON CREAR UNA NUEVA REUNION-->
+                                <%if(locals.userEmail){%>
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#crearModal" data-whatever="@mdo">Crear Reunión</button>
+                                    <div class="modal fade" id="crearModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="crearModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="crearModalLabel" style='color:#167c38'>
+                                                    Información de la nueva reunión</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!--FORMULARIO PARA ASIGNAR LOS DATOS DE LA REUNION A CREAR-->
+                                                <form action="/meetings/createMeeting" method="post">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Título:</label>
+                                                        <input type="text" class="form-control" id="title"
+                                                            placeholder="title" name="title" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="user" id="user"
+                                                            value="<%=username%>">
+                                                    </div>
+                                                    <!--ASIGNATURAS-->
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Asignatura:</label>
+                                                            
+                                                        <select name="subject" id="subject"
+                                                            class="form-control input-lg" required></select>
+                                                    </div>
+                                                    <!--LOCALIZACIÓN-->
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Lugar:</label>
+                                                            
+                                                        <select name="location" id="location"
+                                                            class="form-control input-lg" required></select>
+                                                    </div>
+
+                                                     <!--FECHA DE LA REUNION-->
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Fecha:</label>
+                                                            
+                                                        <input type="date" name="date_reunion" min="2020-01-01"
+                                                            max="2030-05-25" required>
+                                    
+                                                    </div>
+
+                                                    <!-- HORA DE LA REUNION -->
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Hora:</label>
+                                                            
+                                                        <input type="time" name="time_reunion" required>                                    
+                                                    </div>
+                                                     <!--CAPACIDAD-->
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Capacidad:</label>
+                                                        <input type="number" value="2" min="2" max="50"
+                                                            class="form-control" id="capacity" placeholder="capacity"
+                                                            name="capacity" required>
+                                                    </div>
+                                                     <!--COMENTARIO-->
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Comentario:</label>
+                                                        <textarea class="form-control" id="comments"
+                                                            placeholder="comments" name="comments" required></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-success">Enviar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <%}else{%>
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#inicioSesion" data-whatever="@mdo">Crear Reunión</button>
+                                    <%}%>                                
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <!-- LISTAR REUNIONES -->
+                <div class="reunion">
+                    <div class="row">
+                        <div class="col">
+                            <% if(meetings.length > 0){ %>
+                            <% meetings.forEach(t => { %>
+                            <br>
+                            <div class="card">
+                                <div class="col">
+                                    <b><%= t.title %></b>
+                                    <br>
+                                    <div>
+                                        <span class="badge badge-success"> <%= t.subject%></span>
+                                        <span class="badge badge-success"> <%= t.state%></span>
+                                        <span class="badge badge-success"> <%= t.capacity%></span>
+                                    </div>
+                                    <div class="float-left">
+                                        <img src="/images/reunion.png" weigth="16" height="16">
+                                        <%= t.user %>
+                                        <img src="/images/calendar.svg" weigth="16" height="16">
+                                        <%= t.datetime_meeting%>
+                                    </div>
+                                    <!--IR A VER UNA REUNION ESPECIFICA-->
+                                    <form action="/meetings/info" method="post" class="meeting">
+                                        <div class="float-right">
+                                            <input type="hidden" name="idMeeting" value="<%= t.id%>">
+                                            <input type="submit" value="Ver reunión"
+                                                class="btn btn-success btn-sm mb-2">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <% });} else { %>
+                            <h2>No se han encontrado reuniones que listar.</h2>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+         <!-- MODAL AVISO INICIO SESIÓN -->
+         <div class="modal fade" id="inicioSesion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+         <br><br><br><br>
+         <div class="modal-dialog" role="document">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title" id="exampleModalLabel">Inicia sesión para crear una reunión.</h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                     </button>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+                 </div>
+             </div>
+         </div>
+     </div>
+    </main>
+</body>
+
+</html>

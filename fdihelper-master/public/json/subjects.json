@@ -1,0 +1,34 @@
+[
+    {
+        "id": "1",
+        "name": "GPS"
+    },
+    {
+        "id": "2",
+        "name": "MS"
+    },
+    {
+        "id": "3",
+        "name": "ABD"
+    },
+    {
+        "id": "4",
+        "name": "ASR"
+    },
+    {
+        "id": "5",
+        "name": "MOG"
+    },
+    {
+        "id": "6",
+        "name": "TCGE"
+    },
+    {
+        "id": "7",
+        "name": "REDES"
+    },
+    {
+        "id": "8",
+        "name": "TAIS"
+    }
+]

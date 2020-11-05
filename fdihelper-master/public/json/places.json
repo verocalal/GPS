@@ -1,0 +1,22 @@
+[
+   {
+    "id":"1",
+    "name":"Cafeteria"
+   },
+   {
+    "id":"2",
+    "name":"Aula 1"
+   }, 
+   {
+    "id":"3",
+    "name":"Aula 2"
+   }, 
+   {
+    "id":"4",
+    "name":"Pecera"
+   }, 
+   {
+    "id":"5",
+    "name":"Biblioteca"
+   }   
+]

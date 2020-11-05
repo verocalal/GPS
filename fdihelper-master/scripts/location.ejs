@@ -1,0 +1,18 @@
+<script>
+    $(document).ready(function () {
+
+        load_json_data('location');
+
+        function load_json_data(id, parent_id) {
+            var html_code = '';
+            $.getJSON('/json/places.json', function (data) {
+
+                html_code += '<option value="">Seleccciona una ubicación </option>';
+                $.each(data, function (key, value) {
+                    html_code += '<option value="' + value.name + '">' + value.name + '</option>';
+                });
+                $('#' + id).html(html_code);
+            });
+        }
+    });
+</script>

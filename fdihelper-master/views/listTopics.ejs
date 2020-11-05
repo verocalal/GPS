@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ES-ES">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Foro - Listar temas</title>
+</head>
+
+<body>
+    <main>
+        <!--BARRA DE NAVEGACION-->
+        <%- include("./partials/header") %>
+        <!--SCRIPT DE SELECCIÓN DE LA CATEGORÍA y SUBCATEGORÍA -->
+        <%- include("../scripts/SelectTopicCategory") %>
+        <!-- BREADCRUMBS -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/forum">Foro</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Listar temas</li>
+            </ol>
+        </nav>
+        <!--CONTENIDO PRINCIPAL-->
+        <h1>Listar temas</h1>
+        <div class="row">
+            <div class="col contenido-principal">
+                <div class="row">
+                    <div class="col">
+                        <span class="float-right">
+                            <div class='col-lg buttonNewTopic'>
+                                &nbsp;
+                                <!--BOTÓN CREAR UN NUEVO TEMA-->
+                                <%if(locals.userEmail){%>
+                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                    data-target="#crearModal" data-whatever="@mdo">Crear Tema</button>
+                                <div class="modal fade" id="crearModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="crearModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="crearModalLabel" style='color:#167c38'>
+                                                    Información del nuevo tema</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!--FORMULARIO PARA ASIGNAR LOS DATOS DEL TEMA A CREAR-->
+                                                <form action="/forum/createTopic" method="post">
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Tema:</label>
+                                                        <input type="text" class="form-control" id="topic"
+                                                            placeholder="title" name="title" required>
+                                                    </div>
+                                                    <!--TEMAS-->
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="user" id="user"
+                                                            value="<%=username%>">
+                                                    </div>
+                                                    <!-- Selección categoría -->
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Categoría:</label>
+                                                        <select name="category" id="category"
+                                                            class="form-control input-lg" required>
+                                                            <option value="">Selecciona una categoría</option>
+                                                        </select>
+                                                    </div>
+                                                    <!-- Selección subcategoría -->
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Subcategoría:</label>
+
+                                                        <select name="subcategory" id="subcategory"
+                                                            class="form-control input-lg">
+                                                            <option value="">Selecciona una subcategoría</option>
+                                                        </select>
+                                                    </div>
+                                                    <!-- Contenido del tema -->
+                                                    <div class="form-group">
+                                                        <label class="col-form-label" for="recipient-name"
+                                                            style='color:#167c38'>Contenido:</label>
+                                                        <textarea type="text" class="form-control" id="content"
+                                                            placeholder="content" name="content" required></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-success">Enviar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%}else{%>
+                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                    data-target="#inicioSesion" data-whatever="@mdo">Crear Tema</button>
+                                <%}%>                                
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <!-- LISTAR TEMAS -->
+                <div class="tema">
+                    <div class="row">
+                        <div class="col">
+                            <% if(topics.length > 0){ %>
+                                <% topics.forEach(t => { %>
+                                <br>
+                                <div class="card">
+                                    <div class="col">
+                                        <b><%= t.title %></b>
+                                        <br>
+                                        <div>
+                                            <span class="badge badge-success"> <%= t.category%></span>
+                                            <span class="badge badge-success"> <%= t.subcategory%></span>
+                                        </div>
+                                        <div class="float-left">
+                                            <img src="/images/person-fill.svg" weigth="16" height="16">
+                                            <%= t.user %>
+                                            <img src="/images/calendar.svg" weigth="16" height="16">
+                                            <%= t.date%>
+                                        </div>
+                                        <!--IR A VER UN TEMA ESPECIFICO-->
+                                        <form action="/forum/topic" method="post" class="topic">
+                                            <div class="float-right">
+                                                <input type="hidden" name="idTopic" value="<%= t.id%>">
+                                                <input type="submit" value="Ver tema"
+                                                    class="btn btn-success btn-sm mb-2">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <% });} else { %>
+                                <h2>No se han encontrado temas que listar.</h2>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- MODAL AVISO INICIO SESIÓN -->
+        <div class="modal fade" id="inicioSesion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <br><br><br><br>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Inicia sesión para crear un tema en el foro.</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
